@@ -1,8 +1,10 @@
-from flask import Flask
+from flask import Flask, g
 from flask_migrate import Migrate
+from flask_restx import Api
 from models import db
 from routes import books_blueprint, authors_blueprint
 from dotenv import load_dotenv
+from repositories import BookRepository, AuthorRepository
 import os
 
 load_dotenv()
@@ -13,8 +15,13 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
 db.init_app(app)
 migrate = Migrate(app, db)
 
-app.register_blueprint(books_blueprint, url_prefix='/api')
-app.register_blueprint(authors_blueprint, url_prefix='/api')
+api = Api(app, version='0.1', title='Books API')
+
+api.add_namespace(books_blueprint, path='/api/v1')
+
+@app.before_request
+def init_repositories():
+    g.book_repository = BookRepository(context=db)
 
 """
 Test with powersheell:

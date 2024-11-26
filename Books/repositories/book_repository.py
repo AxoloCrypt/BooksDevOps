@@ -7,15 +7,6 @@ class BookRepository(Repository):
     def __init__(self, context, model=Book):
         super().__init__(context, model)
 
-    
-    def get_all_books(self) -> list[Book] | None:
-        return super().get_all()
-
-    
-    def get_book_by_id(self, id: int) -> Book | None:
-        return super().get_by_id(id)
-
-
     def create_book(self, book: Book) -> Book | None:
         created_book = super().create(book)
 
