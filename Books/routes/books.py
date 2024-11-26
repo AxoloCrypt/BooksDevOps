@@ -20,9 +20,12 @@ class Books(Resource):
         books = g.book_repository.get_all()
 
         if books is None:
-            abort(500)
+            return jsonify({
+                'error': 'A server error occurred. Please try again later.',
+                'message': 'Something went wrong while searching for books'
+            }), 500
 
-        json_strings = [book.__str__() for book in books]
+        json_strings = [str(book) for book in books]
 
         json_array = "[" + ",".join(json_strings) + "]"
 
@@ -35,7 +38,10 @@ class Books(Resource):
         book_json = request.get_json()
 
         if book_json is None:
-            abort(400)
+            return jsonify({
+                'error': 'Bad Request',
+                'message': 'Invalid book format'
+            }), 400
 
         new_book = Book()
         new_book.author_id = book_json.get('author_id')
@@ -48,9 +54,12 @@ class Books(Resource):
             created_book = g.book_repository.create_book(new_book)
 
             if created_book is None:
-                abort(500)
+                return jsonify({
+                    'error': 'A server error occurred. Please try again later.',
+                    'message': 'Something went wrong while creating the books'
+                }), 500
 
-            created_book_json = created_book.__str__()
+            created_book_json = str(created_book)
 
         return Response(created_book_json, content_type='application/json')
 
@@ -62,7 +71,10 @@ class Books(Resource):
         book_json = request.get_json()
 
         if book_json is None:
-            abort(400)
+            return jsonify({
+                'error': 'Bad Request',
+                'message': 'Invalid book format'
+            }), 400
 
         book = Book()
         book.id = book_json.get('id')
@@ -76,9 +88,12 @@ class Books(Resource):
             is_book_updated = g.book_repository.edit_book(book.id, book)
 
         if not is_book_updated:
-            abort(500)
+            return jsonify({
+                'error': 'A server error occurred. Please try again later.',
+                'message': 'Something went wrong while updating the book'
+            }), 500
 
-        return '', 200
+        return 'Book was updated sucessfully', 200
 
 
 @books_blueprint.route('/books/<int:id>')
@@ -90,10 +105,13 @@ class BookResources(Resource):
         book = g.book_repository.get_by_id(id)
 
         if book is None:
-            abort(400)
+            return jsonify({
+                'error': 'Bad Request',
+                'message': 'Invalid book format'
+            }), 400
 
 
-        json_string = book.__str__()
+        json_string = str(book)
 
         return Response(json_string, content_type="application/json")
 
@@ -106,7 +124,10 @@ class BookResources(Resource):
             is_book_deleted = g.book_repository.delete_book(id)
 
         if not is_book_deleted:
-            abort(500)
+            return jsonify({
+                'error': 'A server error occurred. Please try again later.',
+                'message': 'Something went wrong while deleting the book'
+            }), 500
 
-        return '', 200
+        return 'Book was deleted', 200
 

@@ -1,4 +1,4 @@
-from flask import Blueprint, g, current_app, abort, Response, request
+from flask import Blueprint, g, current_app, jsonify, Response, request
 from repositories import AuthorRepository
 from models import db, Author
 from flask_restx import Resource, fields, Namespace
@@ -19,7 +19,10 @@ class AuthorsResource(Resource):
         authors = g.author_repository.get_all()
 
         if authors is None:
-            abort(500)
+            return jsonify({
+                'error': 'A server error occurred. Please try again later.',
+                'message': 'Something went wrong while searching for authors'
+            }), 500
 
         json_strings = [author.__str__() for author in authors]
 
@@ -36,6 +39,10 @@ class AuthorsResource(Resource):
 
         if author_json is None:
             abort(400)
+            return jsonify({
+                'error': 'Bad request',
+                'message': 'Invalid format for creating an author'
+            }), 400
 
         
         new_author = Author()
@@ -47,11 +54,14 @@ class AuthorsResource(Resource):
             created_author = g.author_repository.create_author(new_author)
 
             if created_author is None:
-                abort(500)
+                return jsonify({
+                    'error': 'A server error occurred. Please try again later.',
+                    'message': 'Something went wrong while creating the author'
+                }), 500
 
             g.author_repository.save()
 
-            new_author_json = created_author.__str__()
+            new_author_json = str(created_author)
 
         return Response(new_author_json, content_type="application/json") 
 
