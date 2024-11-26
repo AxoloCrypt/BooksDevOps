@@ -6,7 +6,7 @@ from flask_restx import Resource, fields, Namespace
 authors_blueprint = Namespace('authors')
 
 author_model = authors_blueprint.model('Author', {
-    'id': fields.Integer(readonly=True, description='Author unique identifier'),
+    'id': fields.Integer(readonly=False, description='Author unique identifier'),
     'name': fields.String(required=True, description='Author name')
 })
 

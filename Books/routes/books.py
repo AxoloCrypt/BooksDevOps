@@ -1,6 +1,7 @@
 from flask import Blueprint, g, current_app, abort, Response, request
 from flask_restx import Resource, fields, Namespace
 from models import db, Book
+from repositories import BookRepository
 
 books_blueprint = Namespace('books')
 
@@ -46,7 +47,7 @@ class Books(Resource):
 
             created_book = g.book_repository.create_book(new_book)
 
-            if create_book is None:
+            if created_book is None:
                 abort(500)
 
             created_book_json = created_book.__str__()
