@@ -18,10 +18,12 @@ migrate = Migrate(app, db)
 api = Api(app, version='0.1', title='Books API')
 
 api.add_namespace(books_blueprint, path='/api/v1')
+api.add_namespace(authors_blueprint, path='/api/v1')
 
 @app.before_request
 def init_repositories():
     g.book_repository = BookRepository(context=db)
+    g.author_repository = AuthorRepository(context=db)
 
 """
 Test with powersheell:

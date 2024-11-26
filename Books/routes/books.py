@@ -1,5 +1,5 @@
 from flask import Blueprint, g, current_app, abort, Response, request
-from flask_restx import Api, Resource, fields, Namespace
+from flask_restx import Resource, fields, Namespace
 from models import db, Book
 
 books_blueprint = Namespace('books')
