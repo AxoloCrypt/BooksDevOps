@@ -15,7 +15,7 @@ def init_book_repository():
 @books_blueprint.route('/books', methods=['GET'])
 def get_books():
 
-    books = g.book_repository.get_all_books()
+    books = g.book_repository.get_all()
 
     if books is None:
         abort(500)
@@ -31,7 +31,7 @@ def get_books():
 @books_blueprint.route('/books/<int:id>', methods=['GET'])
 def get_book_by_id(id):
 
-    book = g.book_repository.get_book_by_id(id)
+    book = g.book_repository.get_by_id(id)
 
     if book is None:
         abort(400)

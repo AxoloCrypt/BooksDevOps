@@ -13,7 +13,7 @@ def init_author_repository():
 @authors_blueprint.route('/authors', methods=['GET'])
 def get_authors():
 
-    authors = g.author_repository.get_all_authors()
+    authors = g.author_repository.get_all()
 
     if authors is None:
         abort(500)
