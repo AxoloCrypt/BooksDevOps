@@ -106,12 +106,13 @@ class BookResources(Resource):
 
         if book is None:
             return jsonify({
-                'error': 'Bad Request',
-                'message': 'Invalid book format'
-            }), 400
+                'error': 'A server error occurred. Please try again later.',
+                'message': 'Something went wrong while updating the book'
+            }), 500
 
 
         json_string = str(book)
+        print(json_string)
 
         return Response(json_string, content_type="application/json")
 
