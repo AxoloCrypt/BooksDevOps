@@ -1,8 +1,14 @@
 FROM python:3.12.7-alpine3.20
 
-WORKDIR /app
+RUN apk update && apk add make
+RUN adduser -D api
+USER api
 
-COPY . /app
+WORKDIR /home/api
+
+COPY . /home/api
+
+RUN make install
 
 EXPOSE 5000
 

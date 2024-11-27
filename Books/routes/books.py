@@ -1,4 +1,4 @@
-from flask import Blueprint, g, current_app, abort, Response, request
+from flask import Blueprint, g, current_app, Response, request, jsonify
 from flask_restx import Resource, fields, Namespace
 from models import db, Book
 from repositories import BookRepository

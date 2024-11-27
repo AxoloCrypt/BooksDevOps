@@ -36,4 +36,4 @@ Get authors:  Invoke-WebRequest -Method GET -Uri "http://localhost:5000/api/auth
 Create author: Invoke-WebRequest -Method POST -Uri "http://localhost:5000/api/authors" -Body '{ "name": "Tolkien"}' -ContentType "application/json"
 """
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=5000, host='0.0.0.0')
